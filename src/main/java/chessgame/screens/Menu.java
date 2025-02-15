@@ -39,7 +39,7 @@ public class Menu extends Screen{
             public void actionPerformed(ActionEvent e){
                 if (inputOK()){
                     ScreenController.getInstance().showBoardScreen();
-                    ScreenController.getBoard().startGame(comboBoxModi.getSelectedItem().toString(),comboBoxDifficulty.getSelectedItem(),comboBoxPlayerSelection.getSelectedItem().toString(),textFieldNamePlayer1.getText(),textFieldNamePlayer2.getText());
+                    ScreenController.getBoard().startGame(comboBoxModi.getSelectedItem().toString(),(Difficulty) comboBoxDifficulty.getSelectedItem(),comboBoxPlayerSelection.getSelectedItem().toString(),textFieldNamePlayer1.getText(),textFieldNamePlayer2.getText());
                 }
             }
         });
