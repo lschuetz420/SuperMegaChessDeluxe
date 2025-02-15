@@ -1,8 +1,12 @@
 package chessgame.screens;
 
 import javax.swing.*;
+import javax.xml.crypto.KeySelectorException;
 
 import chessgame.objects.*;
+import chessgame.objects.ChessPiece.ColorEnum;
+import chessgame.objects.Player.Difficulty;
+import chessgame.objects.Player.Type;
 import chessgame.screens.ChessGameWindow;
 
 import java.awt.event.ActionListener;
@@ -24,14 +28,7 @@ public class Board extends Screen{
 
 
 
-    private Pawn whitePawn1;
-    private Pawn whitePawn2;
-    private Pawn whitePawn3;
-    private Pawn whitePawn4;
-    private Pawn whitePawn5;
-    private Pawn whitePawn6;
-    private Pawn whitePawn7;
-    private Pawn whitePawn8;
+    private Pawn[] whitePawns;
 
     private Rook whiteRook1;
     private Rook whiteRook2;
@@ -48,14 +45,7 @@ public class Board extends Screen{
 
 
 
-    private Pawn blackPawn1;
-    private Pawn blackPawn2;
-    private Pawn blackPawn3;
-    private Pawn blackPawn4;
-    private Pawn blackPawn5;
-    private Pawn blackPawn6;
-    private Pawn blackPawn7;
-    private Pawn blackPawn8;
+    private Pawn[] blackPawns;
 
     private Rook blackRook1;
     private Rook blackRook2;
@@ -105,28 +95,28 @@ public class Board extends Screen{
 
         for (int i = 0; i < fields.length;i = i + 2){
             for (int j = 0; j < fields[i].length; j = j + 2){
-                fields[i][j].setBackgroundColor(new Color(245, 245, 220));
+                fields[i][j].setBackgroundColor(new Color(150, 111, 51));
                 fields[i][j].setOpaque(true);
             }
         }
         
         for (int i = 1; i < fields.length;i = i + 2){
             for (int j = 1; j < fields[i].length; j = j + 2){
-                fields[i][j].setBackgroundColor(new Color(245, 245, 220));
+                fields[i][j].setBackgroundColor(new Color(150, 111, 51));
                 fields[i][j].setOpaque(true);
             }
         }
-
+        
         for (int i = 0; i < fields.length;i = i + 2){
             for (int j = 1; j < fields[i].length; j = j + 2){
-                fields[i][j].setBackgroundColor(new Color(150, 111, 51));
+                fields[i][j].setBackgroundColor(new Color(245, 245, 220));
                 fields[i][j].setOpaque(true);
             }
         }
         
         for (int i = 1; i < fields.length;i = i + 2){
             for (int j = 0; j < fields[i].length; j = j + 2){
-                fields[i][j].setBackgroundColor(new Color(150, 111, 51));
+                fields[i][j].setBackgroundColor(new Color(245, 245, 220));
                 fields[i][j].setOpaque(true);
             }
         }
@@ -134,7 +124,7 @@ public class Board extends Screen{
 
     private void doFieldClickResponse(ActionEvent e){
         BoardField field = new BoardField((JButton) e.getSource());
-        System.out.println(field.getPositionInfo());
+        
         if (field.getChessPiece() == null){
         
         } else if (field.getChessPiece().getColor() != activeTurnPlayer.getColor()){
@@ -149,12 +139,98 @@ public class Board extends Screen{
 
     }
     
-    public void startGame(String mode, String difficulty, String playerSelection, String namePlayer1, String namePlayer2){
+    public void startGame(String mode, Difficulty difficulty, String playerSelection, String namePlayer1, String namePlayer2){
         turnCounter = 1;
         activeTurnPlayer = player1;      
         gameON = true;
 
-        whitePawn1 = new Pawn();
+        createPieces();
+
+        for (int i = 0; i < 8; i++){
+            fields[1][i].setChessPiece(whitePawns[i]);
+        }
+
+        fields[0][0].setChessPiece(whiteRook1);
+        fields[0][1].setChessPiece(whiteKnight1);
+        fields[0][2].setChessPiece(whiteBishop1);
+        fields[0][3].setChessPiece(whiteQueen);
+        fields[0][4].setChessPiece(whiteKing);
+        fields[0][5].setChessPiece(whiteBishop2);
+        fields[0][6].setChessPiece(whiteKnight2);
+        fields[0][7].setChessPiece(whiteRook2);
+
+        fields[7][0].setChessPiece(blackRook1);
+        fields[7][1].setChessPiece(blackKnight1);
+        fields[7][2].setChessPiece(blackBishop1);
+        fields[7][3].setChessPiece(blackQueen);
+        fields[7][4].setChessPiece(blackKing);
+        fields[7][5].setChessPiece(blackBishop2);
+        fields[7][6].setChessPiece(blackKnight2);
+        fields[7][7].setChessPiece(blackRook2);
+
+        for (int i = 0; i < 8; i++){
+            fields[6][i].setChessPiece(blackPawns[i]);
+        }
+
+        switch(mode){
+            case "Singleplayer":
+                switch(playerSelection){
+                    case "Player 1":
+                        player1 = new Player(namePlayer1, ColorEnum.WHITE, Type.HUMAN, null);
+                        player2 = new Player("AI",ColorEnum.BLACK, Type.AI, difficulty);
+                    break;
+
+                    case "Player 2":
+                        player1 = new Player("AI", ColorEnum.BLACK, Type.AI, difficulty);
+                        player2 = new Player(namePlayer2,ColorEnum.BLACK, Type.HUMAN, null);
+                    break;
+                }
+            break;
+
+            case "Multiplayer":
+                player1 = new Player(namePlayer1,ColorEnum.WHITE, Type.HUMAN, null);
+                player2 = new Player(namePlayer2,ColorEnum.BLACK, Type.HUMAN, null);
+            break;
+        }
+    }
+
+    private void createPieces(){
+        whitePawns = new Pawn[8];
+        for (int i = 0; i < whitePawns.length; i++){
+            whitePawns[i] = new Pawn(ColorEnum.WHITE);
+        }
+
+        whiteRook1 = new Rook(ColorEnum.WHITE);
+        whiteRook2 = new Rook(ColorEnum.WHITE);
         
+        whiteKnight1 = new Knight(ColorEnum.WHITE);
+        whiteKnight2 = new Knight(ColorEnum.WHITE);
+
+        whiteBishop1 = new Bishop(ColorEnum.WHITE);
+        whiteBishop2 = new Bishop(ColorEnum.WHITE);
+
+        whiteQueen = new Queen(ColorEnum.WHITE);
+
+        whiteKing = new King(ColorEnum.WHITE);
+
+
+        
+        blackPawns = new Pawn[8];
+        for (int i = 0; i < blackPawns.length; i++){
+            blackPawns[i] = new Pawn(ColorEnum.BLACK);
+        }
+
+        blackRook1 = new Rook(ColorEnum.BLACK);
+        blackRook2 = new Rook(ColorEnum.BLACK);
+        
+        blackKnight1 = new Knight(ColorEnum.BLACK);
+        blackKnight2 = new Knight(ColorEnum.BLACK);
+
+        blackBishop1 = new Bishop(ColorEnum.BLACK);
+        blackBishop2 = new Bishop(ColorEnum.BLACK);
+
+        blackQueen = new Queen(ColorEnum.BLACK);
+
+        blackKing = new King(ColorEnum.BLACK);
     }
 }

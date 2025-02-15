@@ -8,16 +8,17 @@ import chessgame.objects.BoardField;
 
 public class Bishop extends ChessPiece{
 
-    private 
+    private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_bishop.png";
+    private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_bishop.png";
 
     public Bishop(ColorEnum color){
         piece = Piece.BISHOP;
         
         if (color == ColorEnum.WHITE){
-            ImageIcon whiteBishop = new ImageIcon();
+            ImageIcon whiteBishop = new ImageIcon(iconPathWhite);
             icon = whiteBishop;
         } else if (color == ColorEnum.BLACK){
-            ImageIcon blackBishop = new ImageIcon();
+            ImageIcon blackBishop = new ImageIcon(iconPathBlack);
             icon = blackBishop;
         }
 

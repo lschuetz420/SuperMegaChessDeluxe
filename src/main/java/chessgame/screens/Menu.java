@@ -3,6 +3,7 @@ package chessgame.screens;
 import javax.swing.*;
 
 import chessgame.controller.ScreenController;
+import chessgame.objects.Player.Difficulty;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -38,19 +39,19 @@ public class Menu extends Screen{
             public void actionPerformed(ActionEvent e){
                 if (inputOK()){
                     ScreenController.getInstance().showBoardScreen();
-                    ScreenController.getBoard().startGame(comboBoxModi.getSelectedItem().toString(),comboBoxDifficulty.getSelectedItem().toString(),comboBoxPlayerSelection.getSelectedItem().toString(),textFieldNamePlayer1.getText(),textFieldNamePlayer2.getText());
+                    ScreenController.getBoard().startGame(comboBoxModi.getSelectedItem().toString(),comboBoxDifficulty.getSelectedItem(),comboBoxPlayerSelection.getSelectedItem().toString(),textFieldNamePlayer1.getText(),textFieldNamePlayer2.getText());
                 }
             }
         });
         panel.add(buttonPlay);
         
-        comboBoxDifficulty = new JComboBox();
-        comboBoxDifficulty.addItem("Easy");
-        comboBoxDifficulty.addItem("Normal");
-        comboBoxDifficulty.addItem("Hard");
+        comboBoxDifficulty = new JComboBox<Difficulty>();
+        comboBoxDifficulty.addItem(Difficulty.EASY);
+        comboBoxDifficulty.addItem(Difficulty.MEDIUM);
+        comboBoxDifficulty.addItem(Difficulty.HARD);
         panel.add(comboBoxDifficulty);
         
-        comboBoxPlayerSelection = new JComboBox<>();
+        comboBoxPlayerSelection = new JComboBox();
         comboBoxPlayerSelection.addItem("Player 1");
         comboBoxPlayerSelection.addItem("Player 2");
         panel.add(comboBoxPlayerSelection);
@@ -89,8 +90,6 @@ public class Menu extends Screen{
         comboBoxModi.addItem("Singleplayer");
         comboBoxModi.addItem("Multiplayer");
         panel.add(comboBoxModi);
-        
-        
     }
 
     private boolean inputOK(){
