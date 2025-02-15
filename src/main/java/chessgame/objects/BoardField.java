@@ -2,8 +2,11 @@ package chessgame.objects;
 
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.*;
+
+import chessgame.screens.Board;
 
 public class BoardField {
     
@@ -12,6 +15,10 @@ public class BoardField {
     
     public BoardField(){
         button = new JButton();
+    }
+
+    public BoardField(JButton button){
+        this.button = button;
     }
 
     public void addActionListener(ActionListener listener){
@@ -32,6 +39,10 @@ public class BoardField {
     
     public void setOpaque(boolean isOpaque){
         button.setOpaque(isOpaque);
+    }
+
+    public void setSize(int width, int height){
+        button.setPreferredSize(new Dimension(width, height));
     }
 
     public ChessPiece getChessPiece(){

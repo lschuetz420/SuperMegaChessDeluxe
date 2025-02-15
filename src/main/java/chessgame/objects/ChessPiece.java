@@ -7,6 +7,7 @@ public class ChessPiece{
     public ImageIcon icon;
     public ColorEnum color;
     public Piece piece;
+    public String name;
 
     public enum ColorEnum{
         BLACK,
@@ -32,6 +33,14 @@ public class ChessPiece{
 
     private void setType(Piece piece){
         this.piece = piece;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public ImageIcon getIcon(){
