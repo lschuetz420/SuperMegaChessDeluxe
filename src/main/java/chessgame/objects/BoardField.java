@@ -27,7 +27,11 @@ public class BoardField {
 
     public void setChessPiece(ChessPiece chessPiece){
         this.chessPiece = chessPiece;
-        button.setIcon(chessPiece.getIcon());
+        if (chessPiece != null){
+            button.setIcon(chessPiece.getIcon());
+        } else {
+            button.setIcon(null);
+        }
     }
     
     public void setPositionInfo(String info){

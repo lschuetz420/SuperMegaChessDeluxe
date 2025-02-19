@@ -6,22 +6,39 @@ public class ScreenController{
 
     private static ChessGameWindow window;
     private static Menu menu;
+    private static BoardScreen boardScreen;
     private static Board board;
+    private static BoardMenu boardMenu;
 
     private static ScreenController screenController;
 
     private ScreenController(){
-        if (window == null){
-            window = new ChessGameWindow();
+        if (menu == null){
+            menu = new Menu();
+        }
+        
+        if (boardScreen == null){
+            boardScreen = new BoardScreen();
         }
 
-        if (menu == null){
-            menu = new Menu(window);
+        if (boardMenu == null){
+            boardMenu = new BoardMenu();
         }
 
         if (board == null){
-            board = new Board(window);
+            board = new Board();
         }
+        
+        if (window == null){
+            window = new ChessGameWindow();
+            
+            window.add(menu.getPanel());
+            
+            boardScreen.add(boardMenu.getPanel());
+            boardScreen.add(board.getPanel());
+            window.add(boardScreen.getPanel());
+        }
+
     }
 
     public static ScreenController getInstance() {
@@ -39,16 +56,20 @@ public class ScreenController{
         return board;
     }
 
+    public static BoardScreen getBoardScreen(){
+        return boardScreen;
+    }
+
     public void showMenuScreen(){
         window.setVisible(true);
-        board.setVisible(false);
+        boardScreen.setVisible(false);
         menu.setVisible(true);
     }
 
     public void showBoardScreen(){
         window.setVisible(true);
         menu.setVisible(false);
-        board.setVisible(true);
+        boardScreen.setVisible(true);
     }
 
 

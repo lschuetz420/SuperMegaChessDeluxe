@@ -62,12 +62,9 @@ public class Board extends Screen{
 
 
     
-    public Board(ChessGameWindow window){
+    public Board(){
         panel.setLayout(new GridLayout(8,8));
-        this.window = window;
         createBoard();
-        window.add(panel);
-        window.pack();
         panel.setVisible(false);
     }
 
@@ -145,32 +142,7 @@ public class Board extends Screen{
         gameON = true;
 
         createPieces();
-
-        for (int i = 0; i < 8; i++){
-            fields[1][i].setChessPiece(whitePawns[i]);
-        }
-
-        fields[0][0].setChessPiece(whiteRook1);
-        fields[0][1].setChessPiece(whiteKnight1);
-        fields[0][2].setChessPiece(whiteBishop1);
-        fields[0][3].setChessPiece(whiteQueen);
-        fields[0][4].setChessPiece(whiteKing);
-        fields[0][5].setChessPiece(whiteBishop2);
-        fields[0][6].setChessPiece(whiteKnight2);
-        fields[0][7].setChessPiece(whiteRook2);
-
-        fields[7][0].setChessPiece(blackRook1);
-        fields[7][1].setChessPiece(blackKnight1);
-        fields[7][2].setChessPiece(blackBishop1);
-        fields[7][3].setChessPiece(blackQueen);
-        fields[7][4].setChessPiece(blackKing);
-        fields[7][5].setChessPiece(blackBishop2);
-        fields[7][6].setChessPiece(blackKnight2);
-        fields[7][7].setChessPiece(blackRook2);
-
-        for (int i = 0; i < 8; i++){
-            fields[6][i].setChessPiece(blackPawns[i]);
-        }
+        resetBoard();
 
         switch(mode){
             case "Singleplayer":
@@ -232,5 +204,69 @@ public class Board extends Screen{
         blackQueen = new Queen(ColorEnum.BLACK);
 
         blackKing = new King(ColorEnum.BLACK);
+    }
+
+    private void resetBoard(){
+        for (int i = 0; i < 8; i++){
+            fields[1][i].setChessPiece(whitePawns[i]);
+        }
+
+        fields[0][0].setChessPiece(whiteRook1);
+        fields[0][1].setChessPiece(whiteKnight1);
+        fields[0][2].setChessPiece(whiteBishop1);
+        fields[0][3].setChessPiece(whiteQueen);
+        fields[0][4].setChessPiece(whiteKing);
+        fields[0][5].setChessPiece(whiteBishop2);
+        fields[0][6].setChessPiece(whiteKnight2);
+        fields[0][7].setChessPiece(whiteRook2);
+
+        fields[2][0].setChessPiece(null);
+        fields[2][1].setChessPiece(null);
+        fields[2][2].setChessPiece(null);
+        fields[2][3].setChessPiece(null);
+        fields[2][4].setChessPiece(null);
+        fields[2][5].setChessPiece(null);
+        fields[2][6].setChessPiece(null);
+        fields[2][7].setChessPiece(null);
+
+        fields[3][0].setChessPiece(null);
+        fields[3][1].setChessPiece(null);
+        fields[3][2].setChessPiece(null);
+        fields[3][3].setChessPiece(null);
+        fields[3][4].setChessPiece(null);
+        fields[3][5].setChessPiece(null);
+        fields[3][6].setChessPiece(null);
+        fields[3][7].setChessPiece(null);
+
+        fields[4][0].setChessPiece(null);
+        fields[4][1].setChessPiece(null);
+        fields[4][2].setChessPiece(null);
+        fields[4][3].setChessPiece(null);
+        fields[4][4].setChessPiece(null);
+        fields[4][5].setChessPiece(null);
+        fields[4][6].setChessPiece(null);
+        fields[4][7].setChessPiece(null);
+
+        fields[5][0].setChessPiece(null);
+        fields[5][1].setChessPiece(null);
+        fields[5][2].setChessPiece(null);
+        fields[5][3].setChessPiece(null);
+        fields[5][4].setChessPiece(null);
+        fields[5][5].setChessPiece(null);
+        fields[5][6].setChessPiece(null);
+        fields[5][7].setChessPiece(null);
+
+        fields[7][0].setChessPiece(blackRook1);
+        fields[7][1].setChessPiece(blackKnight1);
+        fields[7][2].setChessPiece(blackBishop1);
+        fields[7][3].setChessPiece(blackQueen);
+        fields[7][4].setChessPiece(blackKing);
+        fields[7][5].setChessPiece(blackBishop2);
+        fields[7][6].setChessPiece(blackKnight2);
+        fields[7][7].setChessPiece(blackRook2);
+
+        for (int i = 0; i < 8; i++){
+            fields[6][i].setChessPiece(blackPawns[i]);
+        }
     }
 }

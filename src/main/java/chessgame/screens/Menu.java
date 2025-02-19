@@ -2,6 +2,8 @@ package chessgame.screens;
 
 import javax.swing.*;
 
+import chessgame.screens.BoardMenu;
+
 import chessgame.controller.ScreenController;
 import chessgame.objects.Player.Difficulty;
 
@@ -12,8 +14,6 @@ import java.awt.event.ActionListener;
 
 public class Menu extends Screen{
 
-    private ChessGameWindow window;
-
     private JButton buttonPlay;
 
     private JComboBox comboBoxModi;
@@ -23,11 +23,8 @@ public class Menu extends Screen{
     private JTextField textFieldNamePlayer1;
     private JTextField textFieldNamePlayer2;
 
-    public Menu(ChessGameWindow window){
-        this.window = window;
+    public Menu (){
         createMenu();
-        window.add(panel);
-        window.pack();
         panel.setVisible(false);
     }
 
