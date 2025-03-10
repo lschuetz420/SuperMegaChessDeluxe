@@ -269,4 +269,8 @@ public class Board extends Screen{
             fields[6][i].setChessPiece(blackPawns[i]);
         }
     }
+
+    public JPanel getPanel(){
+        return panel;
+    }
 }

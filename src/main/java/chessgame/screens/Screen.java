@@ -6,7 +6,7 @@ import java.awt.Component;
 
 public class Screen{
 
-    public static JPanel panel;
+    public JPanel panel;
 
     public Screen(){
         panel = new JPanel();

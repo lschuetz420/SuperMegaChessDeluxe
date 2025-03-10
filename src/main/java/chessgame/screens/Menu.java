@@ -110,4 +110,8 @@ public class Menu extends Screen{
 
         return true;
     }
+
+    public JPanel getPanel(){
+        return panel;
+    }
 }
