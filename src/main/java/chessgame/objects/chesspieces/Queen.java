@@ -1,29 +1,32 @@
-package chessgame.objects;
+package chessgame.objects.chesspieces;
 
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
-import chessgame.objects.BoardField;
+import chessgame.objects.widgets.BoardField;
+import chessgame.objects.widgets.ChessPiece;
 
-public class Bishop extends ChessPiece{
+public class Queen extends ChessPiece{
+    
+    private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_queen.png";
+    private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_queen.png";
 
-    private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_bishop.png";
-    private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_bishop.png";
-
-    public Bishop(ColorEnum color){
-        piece = Piece.BISHOP;
+    public Queen(ColorEnum color){
+        piece = Piece.QUEEN;
         
         if (color == ColorEnum.WHITE){
-            ImageIcon whiteBishop = new ImageIcon(iconPathWhite);
-            icon = whiteBishop;
+            ImageIcon whiteQueen = new ImageIcon(iconPathWhite);
+            icon = whiteQueen;
+            icon.setDescription("whiteQueen");
         } else if (color == ColorEnum.BLACK){
-            ImageIcon blackBishop = new ImageIcon(iconPathBlack);
-            icon = blackBishop;
+            ImageIcon blackQueen = new ImageIcon(iconPathBlack);
+            icon = blackQueen;
+            icon.setDescription("blackQueen");
         }
 
     }
-
+    
     public ArrayList<BoardField> getPossibleFields(BoardField currentField){
         ArrayList<BoardField> fields = new ArrayList<BoardField>();
 
@@ -33,7 +36,6 @@ public class Bishop extends ChessPiece{
         int fieldNumber = Integer.parseInt(numbers[0]);
         int fieldLetter = Integer.parseInt(numbers[1]);
 
-        boolean DO = true;
         int counter = 0;
 
         for (int i = fieldNumber + 1; i < 9; i++){
@@ -78,6 +80,30 @@ public class Bishop extends ChessPiece{
             }
         }
 
+        for (int i = fieldNumber + 1; i < 9;i++){
+            BoardField field = new BoardField();
+            field.setPositionInfo(i + "S" + fieldLetter);
+            fields.add(field);
+        }
+
+        for (int i = fieldNumber - 1; i > 1; i--){
+            BoardField field = new BoardField();
+            field.setPositionInfo(i + "S" + fieldLetter);
+            fields.add(field);
+        }
+
+        for (int j = fieldLetter + 1; j < 9; j++){
+            BoardField field = new BoardField();
+            field.setPositionInfo(fieldNumber + "S" + j);
+            fields.add(field);
+        }
+
+        for (int j = fieldLetter - 1; j > 1; j--){
+            BoardField field = new BoardField();
+            field.setPositionInfo(fieldNumber + "S" + j);
+            fields.add(field);
+        }
+        
         return fields;
     }
 }

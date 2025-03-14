@@ -1,4 +1,6 @@
-package chessgame.objects;
+package chessgame.objects.widgets;
+
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -37,6 +39,11 @@ public class ChessPiece{
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public ArrayList<BoardField> getPossibleFields(BoardField currentField){
+        ArrayList<BoardField> fields = new ArrayList<BoardField>();
+        return fields;
     }
 
     public String getName(){
