@@ -21,4 +21,13 @@ public class Screen{
         panel.setVisible(visible);
     }
 
+    public void setAllComponentsVisible(boolean visible){
+        Component[] components = panel.getComponents();
+
+        for (int i = 0; i < components.length; i++){
+            JPanel panel = (JPanel) components[i]; 
+            panel.setVisible(visible);
+        }
+    }
+
 }

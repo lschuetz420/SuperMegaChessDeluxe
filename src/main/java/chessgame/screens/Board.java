@@ -1,12 +1,23 @@
 package chessgame.screens;
 
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.xml.crypto.KeySelectorException;
 
 import chessgame.objects.*;
-import chessgame.objects.ChessPiece.ColorEnum;
-import chessgame.objects.Player.Difficulty;
-import chessgame.objects.Player.Type;
+import chessgame.objects.chesspieces.Bishop;
+import chessgame.objects.chesspieces.King;
+import chessgame.objects.chesspieces.Knight;
+import chessgame.objects.chesspieces.Pawn;
+import chessgame.objects.chesspieces.Queen;
+import chessgame.objects.chesspieces.Rook;
+import chessgame.objects.widgets.BoardField;
+import chessgame.objects.widgets.ChessPiece;
+import chessgame.objects.widgets.Player;
+import chessgame.objects.widgets.ChessPiece.ColorEnum;
+import chessgame.objects.widgets.Player.Difficulty;
+import chessgame.objects.widgets.Player.Type;
 import chessgame.screens.ChessGameWindow;
 
 import java.awt.event.ActionListener;
@@ -17,9 +28,9 @@ import java.awt.event.ActionEvent;
 public class Board extends Screen{  
     private ChessGameWindow window;
 
-    private Player player1 = null;
-    private Player player2 = null;
-    private Player activeTurnPlayer = null;
+    private Player player1;
+    private Player player2;
+    private Player activeTurnPlayer;
 
     private BoardField[][] fields = new BoardField[8][8]; 
 
@@ -120,30 +131,41 @@ public class Board extends Screen{
     }
 
     private void doFieldClickResponse(ActionEvent e){
-        BoardField field = new BoardField((JButton) e.getSource());
+        BoardField currentField = new BoardField((JButton) e.getSource());
         
-        if (field.getChessPiece() == null){
-        
-        } else if (field.getChessPiece().getColor() != activeTurnPlayer.getColor()){
+        String fieldName = currentField.getPositionInfo();
+        String[] numbers = fieldName.split("S");
 
+        int fieldNumber = Integer.parseInt(numbers[0]);
+        int fieldLetter = Integer.parseInt(numbers[1]);
+
+        ChessPiece chessPiece = fields[fieldNumber - 1][fieldLetter - 1].getChessPiece();
+        
+        if (chessPiece == null){
+            System.out.println("1");
+        } else if (chessPiece.getColor() != activeTurnPlayer.getColor()){
+            System.out.println("2");
+            System.out.println(activeTurnPlayer.getColor().toString());
         } else {
-            String fieldName = field.getPositionInfo();
-            String[] numbers = fieldName.split("S");
+            System.out.println("3");
+            ArrayList<BoardField> fieldsP = chessPiece.getPossibleFields(currentField);
+            
+            for (int i = 0; i < fieldsP.size(); i++){
+                BoardField field = fieldsP.get(i);   
+                
+                String fieldNameP = currentField.getPositionInfo();
+                String[] numbersP = fieldName.split("S");
 
-            int fieldNumber = Integer.parseInt(numbers[0]);
-            int fieldLetter = Integer.parseInt(numbers[1]);
+                int fieldNumberP = Integer.parseInt(numbers[0]);
+                int fieldLetterP = Integer.parseInt(numbers[1]);
+
+                fields[fieldNumberP - 1][fieldLetterP - 1].setBackgroundColor(Color.GREEN);
+            }
         }
-
     }
     
     public void startGame(String mode, Difficulty difficulty, String playerSelection, String namePlayer1, String namePlayer2){
-        turnCounter = 1;
-        activeTurnPlayer = player1;      
-        gameON = true;
-
-        createPieces();
-        resetBoard();
-
+        
         switch(mode){
             case "Singleplayer":
                 switch(playerSelection){
@@ -164,6 +186,13 @@ public class Board extends Screen{
                 player2 = new Player(namePlayer2,ColorEnum.BLACK, Type.HUMAN, null);
             break;
         }
+        
+        activeTurnPlayer = player1;      
+        turnCounter = 1;
+        gameON = true;
+        
+        createPieces();
+        resetBoard();
     }
 
     private void createPieces(){

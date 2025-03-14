@@ -5,7 +5,7 @@ import javax.swing.*;
 import chessgame.screens.BoardMenu;
 
 import chessgame.controller.ScreenController;
-import chessgame.objects.Player.Difficulty;
+import chessgame.objects.widgets.Player.Difficulty;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

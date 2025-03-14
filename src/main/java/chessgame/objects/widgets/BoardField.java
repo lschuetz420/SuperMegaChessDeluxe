@@ -1,4 +1,4 @@
-package chessgame.objects;
+package chessgame.objects.widgets;
 
 import java.awt.event.ActionListener;
 import java.awt.Color;

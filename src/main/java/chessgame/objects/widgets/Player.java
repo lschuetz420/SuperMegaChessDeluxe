@@ -1,6 +1,6 @@
-package chessgame.objects;
+package chessgame.objects.widgets;
 
-import chessgame.objects.ChessPiece.ColorEnum;
+import chessgame.objects.widgets.ChessPiece.ColorEnum;
 
 public class Player {
     
