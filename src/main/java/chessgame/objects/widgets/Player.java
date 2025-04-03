@@ -1,11 +1,11 @@
 package chessgame.objects.widgets;
 
-import chessgame.objects.widgets.ChessPiece.ColorEnum;
+import chessgame.objects.widgets.ChessPiece.PieceColor;
 
 public class Player {
     
     private String name;
-    private ColorEnum color;
+    private PieceColor color;
     private Type type;
     private Difficulty difficulty;
 
@@ -20,7 +20,7 @@ public class Player {
         HARD
     }
 
-    public Player(String name, ColorEnum color, Type type, Difficulty difficulty){
+    public Player(String name, PieceColor color, Type type, Difficulty difficulty){
         this.name = name;
         this.color = color;
         this.type = type;
@@ -39,7 +39,7 @@ public class Player {
         this.name = name;
     }
 
-    public void setColor(ColorEnum color){
+    public void setColor(PieceColor color){
         this.color = color;
     }
 
@@ -55,7 +55,7 @@ public class Player {
         return name;
     }
 
-    public ColorEnum getColor(){
+    public PieceColor getColor(){
         return color;
     }
 }

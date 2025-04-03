@@ -12,21 +12,23 @@ public class King extends ChessPiece{
     private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_king.png";
     private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_king.png";
     
-    public King(ColorEnum color){
-        piece = Piece.KING;
+    public King(PieceColor color){
+        this.piece = Piece.KING;
         
-        if (color == ColorEnum.WHITE){
+        if (color == PieceColor.WHITE){
             ImageIcon whiteKing = new ImageIcon(iconPathWhite);
             icon = whiteKing;
             icon.setDescription("whiteKing");
-        } else if (color == ColorEnum.BLACK){
+        } else if (color == PieceColor.BLACK){
             ImageIcon blackKing = new ImageIcon(iconPathBlack);
             icon = blackKing;
             icon.setDescription("blackKing");
         }
 
+        this.color = color;
     }
 
+    @Override
     public ArrayList<BoardField> getPossibleFields(BoardField currentField){
         ArrayList<BoardField> fields = new ArrayList<BoardField>();
 
