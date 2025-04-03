@@ -15,17 +15,20 @@ import chessgame.objects.chesspieces.Rook;
 import chessgame.objects.widgets.BoardField;
 import chessgame.objects.widgets.ChessPiece;
 import chessgame.objects.widgets.Player;
-import chessgame.objects.widgets.ChessPiece.ColorEnum;
+import chessgame.objects.widgets.ChessPiece.PieceColor;
+import chessgame.objects.widgets.ChessPiece.Piece;
 import chessgame.objects.widgets.Player.Difficulty;
 import chessgame.objects.widgets.Player.Type;
 import chessgame.screens.ChessGameWindow;
+import chessgame.controller.ScreenController;
 
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
-public class Board extends Screen{  
+public class Board extends Screen{
+    
     private ChessGameWindow window;
 
     private Player player1;
@@ -36,8 +39,8 @@ public class Board extends Screen{
 
     private int turnCounter = 1;
     private boolean gameON;
-
-
+    private ChessPiece selectedPiece = null;
+    private BoardField lastSelectedField;
 
     private Pawn[] whitePawns;
 
@@ -72,7 +75,7 @@ public class Board extends Screen{
     private King blackKing;
 
 
-    
+
     public Board(){
         panel.setLayout(new GridLayout(8,8));
         createBoard();
@@ -100,7 +103,10 @@ public class Board extends Screen{
                 panel.add(fields[i][j].getButtonObject());
             }
         }
+        resetBoardColors();
+    }
 
+    private void resetBoardColors(){
         for (int i = 0; i < fields.length;i = i + 2){
             for (int j = 0; j < fields[i].length; j = j + 2){
                 fields[i][j].setBackgroundColor(new Color(150, 111, 51));
@@ -131,9 +137,9 @@ public class Board extends Screen{
     }
 
     private void doFieldClickResponse(ActionEvent e){
-        BoardField currentField = new BoardField((JButton) e.getSource());
-        
-        String fieldName = currentField.getPositionInfo();
+        BoardField selectedField = new BoardField((JButton) e.getSource());
+
+        String fieldName = selectedField.getPositionInfo();
         String[] numbers = fieldName.split("S");
 
         int fieldNumber = Integer.parseInt(numbers[0]);
@@ -141,27 +147,65 @@ public class Board extends Screen{
 
         ChessPiece chessPiece = fields[fieldNumber - 1][fieldLetter - 1].getChessPiece();
         
-        if (chessPiece == null){
-            System.out.println("1");
-        } else if (chessPiece.getColor() != activeTurnPlayer.getColor()){
-            System.out.println("2");
-            System.out.println(activeTurnPlayer.getColor().toString());
-        } else {
-            System.out.println("3");
-            ArrayList<BoardField> fieldsP = chessPiece.getPossibleFields(currentField);
+        Color lastColor;
+
+        if (selectedPiece == null){
+            if (chessPiece == null){    
             
-            for (int i = 0; i < fieldsP.size(); i++){
-                BoardField field = fieldsP.get(i);   
-                
-                String fieldNameP = currentField.getPositionInfo();
-                String[] numbersP = fieldName.split("S");
-
-                int fieldNumberP = Integer.parseInt(numbers[0]);
-                int fieldLetterP = Integer.parseInt(numbers[1]);
-
-                fields[fieldNumberP - 1][fieldLetterP - 1].setBackgroundColor(Color.GREEN);
+            } else if (chessPiece.getColor() != activeTurnPlayer.getColor()){
+            
+            } else {
+                selectedPiece = chessPiece;
+                lastSelectedField = selectedField;
+                ArrayList<BoardField> fieldsP = null;
+                if (chessPiece.getType() == Piece.PAWN){
+                    fieldsP = chessPiece.getPossibleFields(selectedField, chessPiece.getColor());
+                } else {
+                    fieldsP = chessPiece.getPossibleFields(selectedField);
+                }
+    
+                for (int i = 0; i < fieldsP.size(); i++){
+                    BoardField fieldP = fieldsP.get(i);   
+                    
+                    String fieldNameP = fieldP.getPositionInfo();
+                    String[] numbersP = fieldNameP.split("S");
+    
+                    int fieldNumberP = Integer.parseInt(numbersP[0]);
+                    int fieldLetterP = Integer.parseInt(numbersP[1]);
+    
+                    fields[fieldNumberP - 1][fieldLetterP - 1].setBackgroundColor(Color.GREEN);
+                }
             }
-        }
+        } else if (selectedPiece != null && selectedField.getBackgroundColor() == Color.GREEN && selectedField.getChessPiece().getColor() != activeTurnPlayer.getColor()){
+            ChessPiece lastPiece = fields[fieldNumber - 1][fieldLetter - 1].setCurrentGetLastChessPiece(selectedPiece);
+            
+            String fieldNameLast = lastSelectedField.getPositionInfo();
+            String[] numbersLast = fieldNameLast.split("S");
+            
+            int fieldNumberLast = Integer.parseInt(numbersLast[0]);
+            int fieldLetterLast = Integer.parseInt(numbersLast[1]);
+            
+            fields[fieldNumberLast - 1][fieldLetterLast - 1].setChessPiece(null);
+            
+            if (lastPiece != null){
+                switch(lastPiece.getColor()){
+                    case WHITE:
+                        ScreenController.getInstance().getBoardMenu().addToTakenWhitePieces(lastPiece);
+                    break;
+
+                    case BLACK:
+                        ScreenController.getInstance().getBoardMenu().addToTakenBlackPieces(lastPiece);
+                    break;
+                }
+            }
+
+            selectedPiece = null;
+            changeActiveTurnPlayer();
+            resetBoardColors();
+        } else if (selectedPiece != null && selectedField.getBackgroundColor() != Color.GREEN){
+            selectedPiece = null;
+            resetBoardColors();
+        } 
     }
     
     public void startGame(String mode, Difficulty difficulty, String playerSelection, String namePlayer1, String namePlayer2){
@@ -170,20 +214,20 @@ public class Board extends Screen{
             case "Singleplayer":
                 switch(playerSelection){
                     case "Player 1":
-                        player1 = new Player(namePlayer1, ColorEnum.WHITE, Type.HUMAN, null);
-                        player2 = new Player("AI",ColorEnum.BLACK, Type.AI, difficulty);
+                        player1 = new Player(namePlayer1, PieceColor.WHITE, Type.HUMAN, null);
+                        player2 = new Player("AI",PieceColor.BLACK, Type.AI, difficulty);
                     break;
 
                     case "Player 2":
-                        player1 = new Player("AI", ColorEnum.BLACK, Type.AI, difficulty);
-                        player2 = new Player(namePlayer2,ColorEnum.BLACK, Type.HUMAN, null);
+                        player1 = new Player("AI", PieceColor.BLACK, Type.AI, difficulty);
+                        player2 = new Player(namePlayer2,PieceColor.BLACK, Type.HUMAN, null);
                     break;
                 }
             break;
 
             case "Multiplayer":
-                player1 = new Player(namePlayer1,ColorEnum.WHITE, Type.HUMAN, null);
-                player2 = new Player(namePlayer2,ColorEnum.BLACK, Type.HUMAN, null);
+                player1 = new Player(namePlayer1,PieceColor.WHITE, Type.HUMAN, null);
+                player2 = new Player(namePlayer2,PieceColor.BLACK, Type.HUMAN, null);
             break;
         }
         
@@ -192,50 +236,59 @@ public class Board extends Screen{
         gameON = true;
         
         createPieces();
-        resetBoard();
+        resetPiecePositions();
+    }
+
+    private void changeActiveTurnPlayer(){
+        if (activeTurnPlayer.getName().equals(player1.getName())){
+            activeTurnPlayer = player2;
+
+        } else if (activeTurnPlayer.getName().equals(player2.getName())){
+            activeTurnPlayer = player1;
+        }
     }
 
     private void createPieces(){
         whitePawns = new Pawn[8];
         for (int i = 0; i < whitePawns.length; i++){
-            whitePawns[i] = new Pawn(ColorEnum.WHITE);
+            whitePawns[i] = new Pawn(PieceColor.WHITE);
         }
 
-        whiteRook1 = new Rook(ColorEnum.WHITE);
-        whiteRook2 = new Rook(ColorEnum.WHITE);
+        whiteRook1 = new Rook(PieceColor.WHITE);
+        whiteRook2 = new Rook(PieceColor.WHITE);
         
-        whiteKnight1 = new Knight(ColorEnum.WHITE);
-        whiteKnight2 = new Knight(ColorEnum.WHITE);
+        whiteKnight1 = new Knight(PieceColor.WHITE);
+        whiteKnight2 = new Knight(PieceColor.WHITE);
 
-        whiteBishop1 = new Bishop(ColorEnum.WHITE);
-        whiteBishop2 = new Bishop(ColorEnum.WHITE);
+        whiteBishop1 = new Bishop(PieceColor.WHITE);
+        whiteBishop2 = new Bishop(PieceColor.WHITE);
 
-        whiteQueen = new Queen(ColorEnum.WHITE);
+        whiteQueen = new Queen(PieceColor.WHITE);
 
-        whiteKing = new King(ColorEnum.WHITE);
+        whiteKing = new King(PieceColor.WHITE);
 
 
         
         blackPawns = new Pawn[8];
         for (int i = 0; i < blackPawns.length; i++){
-            blackPawns[i] = new Pawn(ColorEnum.BLACK);
+            blackPawns[i] = new Pawn(PieceColor.BLACK);
         }
 
-        blackRook1 = new Rook(ColorEnum.BLACK);
-        blackRook2 = new Rook(ColorEnum.BLACK);
+        blackRook1 = new Rook(PieceColor.BLACK);
+        blackRook2 = new Rook(PieceColor.BLACK);
         
-        blackKnight1 = new Knight(ColorEnum.BLACK);
-        blackKnight2 = new Knight(ColorEnum.BLACK);
+        blackKnight1 = new Knight(PieceColor.BLACK);
+        blackKnight2 = new Knight(PieceColor.BLACK);
 
-        blackBishop1 = new Bishop(ColorEnum.BLACK);
-        blackBishop2 = new Bishop(ColorEnum.BLACK);
+        blackBishop1 = new Bishop(PieceColor.BLACK);
+        blackBishop2 = new Bishop(PieceColor.BLACK);
 
-        blackQueen = new Queen(ColorEnum.BLACK);
+        blackQueen = new Queen(PieceColor.BLACK);
 
-        blackKing = new King(ColorEnum.BLACK);
+        blackKing = new King(PieceColor.BLACK);
     }
 
-    private void resetBoard(){
+    private void resetPiecePositions(){
         for (int i = 0; i < 8; i++){
             fields[1][i].setChessPiece(whitePawns[i]);
         }

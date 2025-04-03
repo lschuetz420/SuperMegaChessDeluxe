@@ -33,6 +33,23 @@ public class BoardField {
             button.setIcon(null);
         }
     }
+
+    public void removeIcon(){
+        button.setIcon(null);
+    }
+
+    public ChessPiece setCurrentGetLastChessPiece(ChessPiece chessPiece){
+        ChessPiece lastPiece = this.chessPiece;
+        this.chessPiece = chessPiece;
+
+        if (chessPiece != null){
+            button.setIcon(chessPiece.getIcon());
+        } else {
+            button.setIcon(null);
+        }
+
+        return lastPiece;
+    }
     
     public void setPositionInfo(String info){
         button.setActionCommand(info);
@@ -62,5 +79,7 @@ public class BoardField {
         return button;
     }
 
-
+    public Color getBackgroundColor(){
+        return button.getBackground();
+    }
 }

@@ -12,21 +12,23 @@ public class Queen extends ChessPiece{
     private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_queen.png";
     private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_queen.png";
 
-    public Queen(ColorEnum color){
-        piece = Piece.QUEEN;
+    public Queen(PieceColor color){
+        this.piece = Piece.QUEEN;
         
-        if (color == ColorEnum.WHITE){
+        if (color == PieceColor.WHITE){
             ImageIcon whiteQueen = new ImageIcon(iconPathWhite);
             icon = whiteQueen;
             icon.setDescription("whiteQueen");
-        } else if (color == ColorEnum.BLACK){
+        } else if (color == PieceColor.BLACK){
             ImageIcon blackQueen = new ImageIcon(iconPathBlack);
             icon = blackQueen;
             icon.setDescription("blackQueen");
         }
 
+        this.color = color;
     }
     
+    @Override
     public ArrayList<BoardField> getPossibleFields(BoardField currentField){
         ArrayList<BoardField> fields = new ArrayList<BoardField>();
 
@@ -52,7 +54,7 @@ public class Queen extends ChessPiece{
             for (int j = fieldLetter - 1; j > 0; j--){
                 if (j == fieldLetter - counter){
                     BoardField field = new BoardField();
-                    field.setPositionInfo(i + "S" + j + fieldLetter);
+                    field.setPositionInfo(i + "S" + j);
                     fields.add(field);
                 }
             }
@@ -74,7 +76,7 @@ public class Queen extends ChessPiece{
             for (int j = fieldLetter - 1; j > 0; j--){
                 if (j == fieldLetter - counter){
                     BoardField field = new BoardField();
-                    field.setPositionInfo(i + "S" + j + fieldLetter);
+                    field.setPositionInfo(i + "S" + j);
                     fields.add(field);
                 }
             }
@@ -86,7 +88,7 @@ public class Queen extends ChessPiece{
             fields.add(field);
         }
 
-        for (int i = fieldNumber - 1; i > 1; i--){
+        for (int i = fieldNumber - 1; i > 0; i--){
             BoardField field = new BoardField();
             field.setPositionInfo(i + "S" + fieldLetter);
             fields.add(field);
@@ -98,7 +100,7 @@ public class Queen extends ChessPiece{
             fields.add(field);
         }
 
-        for (int j = fieldLetter - 1; j > 1; j--){
+        for (int j = fieldLetter - 1; j > 0; j--){
             BoardField field = new BoardField();
             field.setPositionInfo(fieldNumber + "S" + j);
             fields.add(field);

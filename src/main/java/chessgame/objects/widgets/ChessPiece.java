@@ -7,11 +7,11 @@ import javax.swing.*;
 public class ChessPiece{
     
     public ImageIcon icon;
-    public ColorEnum color;
+    public PieceColor color;
     public Piece piece;
     public String name;
 
-    public enum ColorEnum{
+    public enum PieceColor{
         BLACK,
         WHITE
     }
@@ -29,7 +29,7 @@ public class ChessPiece{
         this.icon = icon;
     }
 
-    public void setColor(ColorEnum color){
+    public void setColor(PieceColor color){
         this.color = color;    
     }
 
@@ -46,6 +46,11 @@ public class ChessPiece{
         return fields;
     }
 
+    public ArrayList<BoardField> getPossibleFields(BoardField currentField, PieceColor color){
+        ArrayList<BoardField> fields = new ArrayList<BoardField>();
+        return fields;
+    }
+
     public String getName(){
         return name;
     }
@@ -54,7 +59,7 @@ public class ChessPiece{
         return icon;
     }
 
-    public ColorEnum getColor(){
+    public PieceColor getColor(){
         return color;
     }
 

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import chessgame.objects.widgets.BoardField;
 import chessgame.objects.widgets.ChessPiece;
-import chessgame.objects.widgets.ChessPiece.ColorEnum;
+import chessgame.objects.widgets.ChessPiece.PieceColor;
 import chessgame.objects.widgets.ChessPiece.Piece;
 
 public class Bishop extends ChessPiece{
@@ -14,14 +14,14 @@ public class Bishop extends ChessPiece{
     private String iconPathBlack = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/black_bishop.png";
     private String iconPathWhite = "C:/Projects/SuperMegaChessDeluxe/ressources/images/pieces/white_bishop.png";
 
-    public Bishop(ColorEnum color){
-        piece = Piece.BISHOP;
+    public Bishop(PieceColor color){
+        this.piece = Piece.BISHOP;
         
-        if (color == ColorEnum.WHITE){
+        if (color == PieceColor.WHITE){
             ImageIcon whiteBishop = new ImageIcon(iconPathWhite);
             icon = whiteBishop;
             icon.setDescription("whiteBishop");
-        } else if (color == ColorEnum.BLACK){
+        } else if (color == PieceColor.BLACK){
             ImageIcon blackBishop = new ImageIcon(iconPathBlack);
             icon = blackBishop;
             icon.setDescription("blackBishop");
@@ -44,7 +44,6 @@ public class Bishop extends ChessPiece{
 
         for (int i = fieldNumber + 1; i < 9; i++){
             counter++;
-
             for (int j = fieldLetter + 1; j < 9; j++){
                 if (j == counter + fieldLetter){
                     BoardField field = new BoardField();
@@ -56,17 +55,16 @@ public class Bishop extends ChessPiece{
             for (int j = fieldLetter - 1; j > 0; j--){
                 if (j == fieldLetter - counter){
                     BoardField field = new BoardField();
-                    field.setPositionInfo(i + "S" + j + fieldLetter);
+                    field.setPositionInfo(i + "S" + j);
                     fields.add(field);
                 }
             }
         }
 
         counter = 0;
-
         for (int i = fieldNumber - 1; i > 0; i--){
             counter++;
-
+            
             for (int j = fieldLetter + 1; j < 9; j++){
                 if (j == counter + fieldLetter){
                     BoardField field = new BoardField();
@@ -74,16 +72,16 @@ public class Bishop extends ChessPiece{
                     fields.add(field);
                 }
             }
-
+            
             for (int j = fieldLetter - 1; j > 0; j--){
                 if (j == fieldLetter - counter){
                     BoardField field = new BoardField();
-                    field.setPositionInfo(i + "S" + j + fieldLetter);
+                    field.setPositionInfo(i + "S" + j);
                     fields.add(field);
                 }
             }
         }
-
+        
         return fields;
     }
 }
